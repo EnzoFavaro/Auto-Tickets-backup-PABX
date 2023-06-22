@@ -1,11 +1,14 @@
 import requests
 import json
 import csv
+from urllib3.exceptions import InsecureRequestWarning
+from urllib3 import disable_warnings
+disable_warnings(InsecureRequestWarning)
 
 
 USER_API = "Enzo2";
 KEY_API = "47820d2e-28f4-45a0-9b13-8731c6956d1e";
-url = 'https://pabx.azuton.com/pabx/api.php'
+url = 'https://34.95.249.78/pabx/api.php'
 
 
 f = open('empresas.csv', 'w', newline='')
@@ -23,7 +26,7 @@ payload_init = {
     "nome": "",
     "pos_registro_inicial": 0
   }
-res_init = requests.post(url, data=json.dumps(payload_init))
+res_init = requests.post(url, data=json.dumps(payload_init),verify=False)
 resposta_init = res_init.json()
 qnt_registros = resposta_init[ "qtd_total_resultados"]
 
@@ -44,7 +47,7 @@ while pos_reg <= int(qnt_registros):
         "pos_registro_inicial": pos_reg
         } 
 
-    res = requests.post(url, data=json.dumps(payload))
+    res = requests.post(url, data=json.dumps(payload),verify=False)
     resposta = res.json()
     qnt_retornados = resposta["qtd_resultados_retornados"]
   
